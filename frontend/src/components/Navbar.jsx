@@ -6,7 +6,7 @@ const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Projects", path: "/projects" },
-    { name: "Career", path: "/contact" },
+    { name: "Career", path: "/career" },
 ];
 
 export function Navbar() {

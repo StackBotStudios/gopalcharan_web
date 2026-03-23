@@ -8,6 +8,7 @@ export function Footer() {
         { label: "Completed Projects", path: "/projects" },
         { label: "Investor Relations", path: "/contact" },
         { label: "Contact", path: "/contact" },
+        { label: "Career", path: "/career" },
     ];
 
     const developments = [
