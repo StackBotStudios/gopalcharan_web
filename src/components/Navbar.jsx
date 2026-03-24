@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
+import logo from "@/assets/logo.svg";
 
 const navLinks = [
     { name: "Home", path: "/" },
@@ -11,14 +12,7 @@ const navLinks = [
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
-
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 60);
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
 
     useEffect(() => {
         setIsOpen(false);
@@ -27,44 +21,34 @@ export function Navbar() {
     return (
         <nav
             data-testid="navbar"
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${
-                scrolled
-                    ? "bg-[#1E1E1E]/90 backdrop-blur-xl border-b border-[#D4A76A]/20 shadow-lg shadow-black/20"
-                    : "bg-transparent"
-            }`}
+            className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#E5E1DA]"
         >
-            <div className="max-w-7xl mx-auto px-6 lg:px-10">
-                <div className="flex items-center justify-between h-20">
+            <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+                <div className="flex items-center justify-between h-24">
                     {/* Logo */}
                     <Link
                         to="/"
                         data-testid="navbar-logo"
-                        className="flex items-center gap-3 group"
+                        className="flex items-center"
                     >
-                        <div className="w-10 h-10 bg-[#D4A76A] flex items-center justify-center flex-shrink-0 group-hover:bg-[#E0CC9C] transition-colors duration-200">
-                            <span className="text-[#1E1E1E] font-bold text-base leading-none">GC</span>
-                        </div>
-                        <div className="leading-none">
-                            <div className="text-white font-bold text-sm tracking-wider">GOPAL CHARAN</div>
-                            <div className="text-[#D4A76A] text-[10px] tracking-[0.18em] uppercase mt-0.5">BUILD THE BEST Since 1979</div>
-                        </div>
+                        <img src={logo} alt="Gopal Charan" className="h-14 w-auto" />
                     </Link>
 
                     {/* Desktop Nav Links */}
-                    <div className="hidden md:flex items-center gap-8">
+                    <div className="hidden md:flex items-center gap-14">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.path + link.name}
                                 to={link.path}
                                 data-testid={`nav-link-${link.name.toLowerCase()}`}
-                                className={`text-sm font-medium transition-colors duration-200 relative group ${
+                                className={`text-[23px] font-semibold leading-none transition-colors duration-200 flex items-center gap-1.5 ${
                                     location.pathname === link.path
-                                        ? "text-[#D4A76A]"
-                                        : "text-white/75 hover:text-white"
+                                        ? "text-[#121212]"
+                                        : "text-[#2D2D2D] hover:text-[#121212]"
                                 }`}
                             >
                                 {link.name}
-                                <span className={`absolute -bottom-0.5 left-0 h-px bg-[#D4A76A] transition-all duration-300 ${location.pathname === link.path ? "w-full" : "w-0 group-hover:w-full"}`} />
+                                {link.name === "Projects" && <ChevronDown size={18} strokeWidth={2.2} />}
                             </Link>
                         ))}
                     </div>
@@ -74,7 +58,7 @@ export function Navbar() {
                         <Link
                             to="/contact"
                             data-testid="navbar-contact-btn"
-                            className="bg-[#D4A76A] text-[#1E1E1E] px-6 py-2.5 text-sm font-semibold hover:bg-[#E0CC9C] transition-colors duration-200 tracking-wide"
+                            className="bg-[#D4A76A] text-[#272727] px-7 py-3 text-[23px] font-semibold rounded-[10px] hover:bg-[#C99C62] transition-colors duration-200 leading-none"
                         >
                             Contact Us
                         </Link>
@@ -84,7 +68,7 @@ export function Navbar() {
                     <button
                         data-testid="mobile-menu-toggle"
                         onClick={() => setIsOpen(!isOpen)}
-                        className="md:hidden text-white p-2 hover:text-[#D4A76A] transition-colors duration-200"
+                        className="md:hidden text-[#272727] p-2 hover:text-[#121212] transition-colors duration-200"
                         aria-label="Toggle menu"
                     >
                         {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -96,7 +80,7 @@ export function Navbar() {
             {isOpen && (
                 <div
                     data-testid="mobile-menu"
-                    className="md:hidden bg-[#1E1E1E]/97 backdrop-blur-xl border-t border-[#D4A76A]/20"
+                    className="md:hidden bg-white border-t border-[#E5E1DA]"
                 >
                     <div className="px-6 py-8 flex flex-col gap-6">
                         {navLinks.map((link) => (
@@ -104,8 +88,8 @@ export function Navbar() {
                                 key={link.path + link.name}
                                 to={link.path}
                                 data-testid={`mobile-nav-link-${link.name.toLowerCase()}`}
-                                className={`text-base font-medium transition-colors duration-200 ${
-                                    location.pathname === link.path ? "text-[#D4A76A]" : "text-white/75"
+                                className={`text-xl font-semibold transition-colors duration-200 ${
+                                    location.pathname === link.path ? "text-[#121212]" : "text-[#2D2D2D]"
                                 }`}
                             >
                                 {link.name}
@@ -114,7 +98,7 @@ export function Navbar() {
                         <Link
                             to="/contact"
                             data-testid="mobile-contact-btn"
-                            className="bg-[#D4A76A] text-[#1E1E1E] px-6 py-3 text-sm font-semibold text-center mt-2 hover:bg-[#E0CC9C] transition-colors duration-200"
+                            className="bg-[#D4A76A] text-[#272727] px-6 py-3 text-xl font-semibold text-center mt-2 rounded-[10px] hover:bg-[#C99C62] transition-colors duration-200"
                         >
                             Contact Us
                         </Link>

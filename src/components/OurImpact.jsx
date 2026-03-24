@@ -1,4 +1,3 @@
-import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 const stats = [
@@ -12,7 +11,7 @@ export function OurImpact() {
     return (
         <section
             data-testid="our-impact-section"
-            className="py-24 lg:py-32 bg-[#1E1E1E] border-y border-[#D4A76A]/10"
+            className="py-20 md:py-24 bg-[#171A1F]"
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-10">
                 {/* Header */}
@@ -21,21 +20,21 @@ export function OurImpact() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="text-center mb-16"
+                    className="mb-12 md:mb-14"
                 >
-                    <p className="text-[#D4A76A] text-xs tracking-[0.32em] uppercase mb-4">
+                    <p className="text-white text-xs tracking-[0.30em] uppercase mb-3 font-medium">
                         Our Impact
                     </p>
-                    <h2 className="text-4xl md:text-5xl font-light text-white mb-5">
+                    <h2 className="text-3xl md:text-[50px] font-semibold text-white mb-4 leading-tight">
                         Four Decades of Measurable Excellence
                     </h2>
-                    <p className="text-white/50 text-base leading-relaxed">
+                    <p className="text-white text-base md:text-[22px] leading-snug">
                         Delivering scale, precision, and trust across every development.
                     </p>
                 </motion.div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#D4A76A]/10">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-10 lg:gap-y-0">
                     {stats.map((stat, idx) => (
                         <StatCard key={idx} stat={stat} idx={idx} />
                     ))}
@@ -46,35 +45,19 @@ export function OurImpact() {
 }
 
 function StatCard({ stat, idx }) {
-    const [visible, setVisible] = useState(false);
-    const ref = useRef(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => setVisible(true), idx * 120);
-                    observer.disconnect();
-                }
-            },
-            { threshold: 0.4 }
-        );
-        if (ref.current) observer.observe(ref.current);
-        return () => observer.disconnect();
-    }, [idx]);
-
     return (
-        <div
-            ref={ref}
+        <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: idx * 0.1 }}
             data-testid={`stat-card-${idx}`}
-            className={`bg-[#282828] text-center py-12 px-6 transition-all duration-700 ${
-                visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
+            className="text-left py-2 px-2"
         >
-            <div className="text-5xl lg:text-6xl font-light text-[#D4A76A] mb-3 tracking-tight">
+            <div className="text-[44px] md:text-[56px] font-semibold text-[#D8B98B] mb-2 tracking-tight leading-none">
                 {stat.display}
             </div>
-            <p className="text-white/55 text-sm tracking-wide">{stat.label}</p>
-        </div>
+            <p className="text-white text-base md:text-[21px] leading-tight">{stat.label}</p>
+        </motion.div>
     );
 }

@@ -29,7 +29,7 @@ export function AboutLegacy() {
     return (
         <section
             data-testid="about-legacy-section"
-            className="py-24 lg:py-32 bg-[#1E1E1E] overflow-hidden"
+            className="py-24 lg:py-32 bg-[#ffffff] overflow-hidden"
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
@@ -61,13 +61,13 @@ export function AboutLegacy() {
                         transition={{ duration: 0.8, delay: 0.1 }}
                         className="py-4"
                     >
-                        <p className="text-[#D4A76A] text-xs tracking-[0.32em] uppercase mb-5">
+                        <p className="text-[#1E1E1E] text-xs tracking-[0.32em] uppercase mb-5">
                             About Us
                         </p>
-                        <h2 className="text-4xl md:text-5xl font-light text-white mb-6 leading-tight">
+                        <h2 className="text-4xl md:text-5xl text-[#1E1E1E] mb-6 font-semibold leading-tight">
                             Building Legacy Since 1979
                         </h2>
-                        <p className="text-white/55 text-base leading-relaxed mb-10">
+                        <p className="text-[#1E1E1E]/55 text-base leading-relaxed mb-10">
                             Over four decades of delivering landmark developments across residential,
                             commercial and industrial sectors.
                         </p>
@@ -88,10 +88,10 @@ export function AboutLegacy() {
                                         className="absolute -left-7 top-2 w-2 h-2 rounded-full bg-[#D4A76A] flex-shrink-0"
                                         style={{ marginLeft: "-3.5px" }}
                                     />
-                                    <span className="text-[#D4A76A] text-sm font-semibold min-w-[3.5rem]">
+                                    <span className="text-[#1E1E1E] text-sm font-semibold min-w-[3.5rem]">
                                         {item.year}
                                     </span>
-                                    <span className="text-white/55 text-sm">&mdash; {item.event}</span>
+                                    <span className="text-[#1E1E1E] text-sm">&mdash; {item.event}</span>
                                 </motion.div>
                             ))}
                         </div>
@@ -107,8 +107,8 @@ export function AboutLegacy() {
                                     transition={{ duration: 0.5, delay: 0.2 + idx * 0.1 }}
                                     data-testid={`about-pillar-${p.title.toLowerCase()}`}
                                 >
-                                    <h4 className="text-white font-semibold text-sm mb-2">{p.title}</h4>
-                                    <p className="text-white/45 text-xs leading-relaxed">{p.desc}</p>
+                                    <h4 className="text-[#1E1E1E] font-semibold text-sm mb-2">{p.title}</h4>
+                                    <p className="text-[#1E1E1E]/45 text-xs leading-relaxed">{p.desc}</p>
                                 </motion.div>
                             ))}
                         </div>

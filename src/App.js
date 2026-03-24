@@ -21,7 +21,7 @@ function Layout({ children }) {
     return (
         <div className="bg-[#1E1E1E] min-h-screen font-sans">
             <Navbar />
-            <main>{children}</main>
+            <main className="pt-24">{children}</main>
             <Footer />
         </div>
     );

@@ -24,14 +24,15 @@ export function OurVision() {
     return (
         <section
             data-testid="our-vision-section"
-            className="relative py-28 lg:py-40 overflow-hidden"
+            className="relative py-20 md:py-24 overflow-hidden"
         >
             {/* Background */}
             <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: `url(${VISION_BG})` }}
             />
-            <div className="absolute inset-0 bg-[#1E1E1E]/80" />
+            <div className="absolute inset-0 bg-[#12161C]/62" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#10141A]/70 via-[#10141A]/45 to-[#10141A]/70" />
 
             {/* Content */}
             <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10">
@@ -40,38 +41,40 @@ export function OurVision() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="text-center mb-16"
+                    className="mb-12 md:mb-14"
                 >
-                    <p className="text-[#D4A76A] text-xs tracking-[0.32em] uppercase mb-4">
+                    <p className="text-white text-xs tracking-[0.30em] uppercase mb-3 font-medium">
                         Our Vision
                     </p>
-                    <h2 className="text-4xl md:text-5xl font-light text-white mb-6 leading-tight">
+                    <h2 className="text-3xl md:text-[50px] font-semibold text-white mb-4 leading-tight max-w-5xl">
                         Shaping the Future of Modern Real Estate
                     </h2>
-                    <p className="text-white/55 text-base max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-white text-base md:text-[25px] leading-snug max-w-6xl">
                         We create developments that combine architectural excellence, sustainable
                         growth, and long-term investment value.
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 mt-12 md:mt-16">
                     {pillars.map((pillar, idx) => (
                         <motion.div
                             key={pillar.num}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: idx * 0.15 }}
+                            transition={{ duration: 0.6, delay: idx * 0.12 }}
                             data-testid={`vision-pillar-${pillar.num}`}
-                            className="bg-[#1E1E1E]/65 backdrop-blur-sm border border-[#D4A76A]/20 p-8 hover:border-[#D4A76A]/50 hover:bg-[#1E1E1E]/80 transition-all duration-300 group"
+                            className={`px-5 md:px-8 text-center min-h-[250px] ${
+                                idx !== 0 ? "border-t md:border-t-0 md:border-l border-white/45" : ""
+                            }`}
                         >
-                            <span className="text-[#D4A76A] text-4xl font-light mb-5 block opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                            <span className="text-[#D8B98B] text-5xl md:text-[54px] font-medium mb-5 block leading-none">
                                 {pillar.num}
                             </span>
-                            <h3 className="text-white text-xl font-semibold mb-3">
+                            <h3 className="text-white text-2xl md:text-[34px] font-semibold mb-4 leading-tight">
                                 {pillar.title}
                             </h3>
-                            <p className="text-white/50 text-sm leading-relaxed">{pillar.desc}</p>
+                            <p className="text-white text-base md:text-[24px] leading-snug">{pillar.desc}</p>
                         </motion.div>
                     ))}
                 </div>

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
+import footerLogo from "@/assets/FooterLogo.svg";
 
 export function Footer() {
     const quickLinks = [
@@ -18,36 +19,32 @@ export function Footer() {
     ];
 
     return (
-        <footer data-testid="footer" className="bg-[#282828] border-t border-[#D4A76A]/15">
-            <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-16 pb-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <footer data-testid="footer" className="bg-[#161A20] border-t border-white/10">
+            <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-14 pb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.45fr_0.7fr_0.7fr_1.35fr] gap-10 mb-10">
                     {/* Logo & Mission */}
                     <div className="lg:col-span-1">
-                        <div className="flex items-center gap-3 mb-5">
-                            <div className="w-10 h-10 bg-[#D4A76A] flex items-center justify-center flex-shrink-0">
-                                <span className="text-[#1E1E1E] font-bold text-base">GC</span>
-                            </div>
-                            <div className="leading-none">
-                                <div className="text-white font-bold text-sm tracking-wider">GOPAL CHARAN</div>
-                                <div className="text-[#D4A76A] text-[10px] tracking-[0.18em] uppercase mt-0.5">BUILD THE BEST Since 1979</div>
-                            </div>
-                        </div>
-                        <p className="text-white/50 text-sm leading-relaxed">
+                        <img
+                            src={footerLogo}
+                            alt="Gopal Charan Footer Logo"
+                            className="w-24 h-24 object-contain mb-5"
+                        />
+                        <p className="text-white text-base md:text-[17px] leading-relaxed max-w-[360px]">
                             Building landmark developments across residential, commercial, and industrial sectors since 1979.
                         </p>
                     </div>
 
                     {/* Quick Links */}
                     <div>
-                        <h4 className="text-[#D4A76A] text-xs tracking-[0.25em] uppercase mb-6 font-semibold">
+                        <h4 className="text-white text-base md:text-[19px] font-semibold mb-4">
                             Quick Links
                         </h4>
-                        <ul className="space-y-3">
+                        <ul className="space-y-2.5">
                             {quickLinks.map((item) => (
                                 <li key={item.label}>
                                     <Link
                                         to={item.path}
-                                        className="text-white/50 text-sm hover:text-[#D4A76A] transition-colors duration-200"
+                                        className="text-white/55 text-sm md:text-[16px] hover:text-white transition-colors duration-200"
                                     >
                                         {item.label}
                                     </Link>
@@ -58,15 +55,15 @@ export function Footer() {
 
                     {/* Our Developments */}
                     <div>
-                        <h4 className="text-[#D4A76A] text-xs tracking-[0.25em] uppercase mb-6 font-semibold">
+                        <h4 className="text-white text-base md:text-[19px] font-semibold mb-4">
                             Our Developments
                         </h4>
-                        <ul className="space-y-3">
+                        <ul className="space-y-2.5">
                             {developments.map((item) => (
                                 <li key={item.label}>
                                     <Link
                                         to={item.path}
-                                        className="text-white/50 text-sm hover:text-[#D4A76A] transition-colors duration-200"
+                                        className="text-white/55 text-sm md:text-[16px] hover:text-white transition-colors duration-200"
                                     >
                                         {item.label}
                                     </Link>
@@ -77,30 +74,30 @@ export function Footer() {
 
                     {/* Contact */}
                     <div>
-                        <h4 className="text-[#D4A76A] text-xs tracking-[0.25em] uppercase mb-6 font-semibold">
+                        <h4 className="text-white text-base md:text-[19px] font-semibold mb-4">
                             Contact Us
                         </h4>
                         <div className="space-y-4">
                             <div className="flex gap-3 items-start">
-                                <MapPin size={15} className="text-[#D4A76A] flex-shrink-0 mt-0.5" />
-                                <p className="text-white/50 text-sm leading-relaxed">
+                                <MapPin size={20} className="text-[#D8B98B] flex-shrink-0 mt-1" />
+                                <p className="text-white/55 text-sm md:text-[15px] leading-relaxed">
                                     17 to 20, First Floor, Trimurti Complex, B/s, Devraj Mall, Thakkarbapa Nagar Road, India Colony, Ahmedabad&#8209;382350
                                 </p>
                             </div>
                             <div className="flex gap-3 items-center">
-                                <Phone size={15} className="text-[#D4A76A] flex-shrink-0" />
+                                <Phone size={20} className="text-[#D8B98B] flex-shrink-0" />
                                 <a
                                     href="tel:+919638188188"
-                                    className="text-white/50 text-sm hover:text-[#D4A76A] transition-colors duration-200"
+                                    className="text-white/55 text-sm md:text-[15px] hover:text-white transition-colors duration-200"
                                 >
                                     +91 96381 88188
                                 </a>
                             </div>
                             <div className="flex gap-3 items-center">
-                                <Mail size={15} className="text-[#D4A76A] flex-shrink-0" />
+                                <Mail size={20} className="text-[#D8B98B] flex-shrink-0" />
                                 <a
                                     href="mailto:gcindhub@yahoo.com"
-                                    className="text-white/50 text-sm hover:text-[#D4A76A] transition-colors duration-200"
+                                    className="text-white/55 text-sm md:text-[15px] hover:text-white transition-colors duration-200"
                                 >
                                     gcindhub@yahoo.com
                                 </a>
@@ -110,18 +107,18 @@ export function Footer() {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="border-t border-[#D4A76A]/15 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-white/35 text-xs">
+                <div className="border-t border-[#C9AC7A]/55 pt-5 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-white/90 text-xs md:text-sm">
                         &copy; 2026 Gopal Charan. All Rights Reserved.
                     </p>
-                    <div className="flex flex-wrap justify-center gap-6">
-                        <a href="#" className="text-white/35 text-xs hover:text-[#D4A76A] transition-colors duration-200">
+                    <div className="flex flex-wrap justify-center gap-8">
+                        <a href="#" className="text-white/90 text-xs md:text-sm hover:text-[#D8B98B] transition-colors duration-200">
                             Privacy Policy
                         </a>
-                        <a href="#" className="text-white/35 text-xs hover:text-[#D4A76A] transition-colors duration-200">
+                        <a href="#" className="text-white/90 text-xs md:text-sm hover:text-[#D8B98B] transition-colors duration-200">
                             Terms &amp; Conditions
                         </a>
-                        <a href="#" className="text-white/35 text-xs hover:text-[#D4A76A] transition-colors duration-200">
+                        <a href="#" className="text-white/90 text-xs md:text-sm hover:text-[#D8B98B] transition-colors duration-200">
                             RERA Registration No. (To be provided by client)
                         </a>
                     </div>
