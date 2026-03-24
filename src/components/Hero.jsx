@@ -10,12 +10,12 @@ export function Hero({
     cta2Label = "Contact Sales",
     cta2Path = "/contact",
     bgImage = HERO_BG,
-    minHeight = "100vh",
+    minHeight = "78vh",
 }) {
     return (
         <section
             data-testid="hero-section"
-            className="relative flex items-center justify-center overflow-hidden"
+            className="relative flex items-center overflow-hidden"
             style={{ minHeight }}
         >
             {/* Background Image */}
@@ -24,33 +24,18 @@ export function Hero({
                 style={{ backgroundImage: `url(${bgImage})` }}
             />
             {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/55 to-[#1E1E1E]" />
+            <div className="absolute inset-0 bg-[#0D1118]/58" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0D1118]/72 via-[#0D1118]/58 to-[#0D1118]/65" />
 
             {/* Noise Texture */}
-            <div
-                className="absolute inset-0 opacity-[0.03]"
-                style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-                    backgroundSize: "200px",
-                }}
-            />
-
             {/* Content */}
-            <div className="relative z-10 text-center max-w-5xl mx-auto px-6 pt-24 pb-16">
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className="text-[#D4A76A] text-xs tracking-[0.35em] uppercase mb-6"
-                >
-                    Gopal Charan &mdash; Since 1979
-                </motion.p>
-
+            <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full">
+                <div className="max-w-2xl pt-14 md:pt-16 pb-14">
                 <motion.h1
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.15 }}
-                    className="text-5xl md:text-6xl lg:text-7xl font-light text-white leading-tight mb-10 tracking-tight"
+                    className="text-5xl md:text-[64px] font-semibold text-white leading-[1.05] mb-8 tracking-tight"
                 >
                     {title}
                 </motion.h1>
@@ -59,27 +44,25 @@ export function Hero({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.35 }}
-                    className="flex flex-col sm:flex-row gap-4 justify-center"
+                    className="flex flex-col sm:flex-row gap-4"
                 >
                     <Link
                         to={cta1Path}
                         data-testid="hero-cta1"
-                        className="bg-[#D4A76A] text-[#1E1E1E] px-8 py-4 text-sm font-semibold tracking-wide hover:bg-[#E0CC9C] transition-colors duration-200 inline-block"
+                        className="bg-[#D8B98B] text-[#1D2025] px-8 py-3 text-sm md:text-[17px] font-semibold rounded-lg hover:bg-[#CCAB79] transition-colors duration-200 inline-block text-center"
                     >
                         {cta1Label}
                     </Link>
                     <Link
                         to={cta2Path}
                         data-testid="hero-cta2"
-                        className="border border-[#D4A76A] text-[#D4A76A] px-8 py-4 text-sm font-semibold tracking-wide hover:bg-[#D4A76A] hover:text-[#1E1E1E] transition-all duration-200 inline-block"
+                        className="border border-[#D8B98B]/80 text-[#D8B98B] px-8 py-3 text-sm md:text-[17px] font-semibold rounded-lg hover:bg-[#D8B98B] hover:text-[#1D2025] transition-all duration-200 inline-block text-center"
                     >
                         {cta2Label}
                     </Link>
                 </motion.div>
+                </div>
             </div>
-
-            {/* Bottom gradient fade */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#1E1E1E] to-transparent" />
         </section>
     );
 }
