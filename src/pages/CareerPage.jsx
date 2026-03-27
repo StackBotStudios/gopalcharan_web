@@ -1,7 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import { CloudUpload, ChevronDown, X, FileText } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const CAREER_BG = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80";
 
@@ -22,6 +22,13 @@ const experienceOptions = [
     "3 - 5 Years",
     "5 - 10 Years",
     "10+ Years",
+];
+
+const channelFocusOptions = [
+    "Residential",
+    "Commercial",
+    "Industrial",
+    "Mixed / Multiple",
 ];
 
 function FormInput({ label, id, type = "text", placeholder, value, onChange, error, required }) {
@@ -101,9 +108,65 @@ export default function CareerPage() {
     const [submitted, setSubmitted] = useState(false);
     const [dragOver, setDragOver] = useState(false);
 
+    const [partnerForm, setPartnerForm] = useState({
+        companyName: "",
+        contactName: "",
+        email: "",
+        phone: "",
+        city: "",
+        channelFocus: "",
+        message: "",
+    });
+    const [partnerErrors, setPartnerErrors] = useState({});
+    const [partnerSubmitted, setPartnerSubmitted] = useState(false);
+
+    const [activeTab, setActiveTab] = useState("career");
+
+    useEffect(() => {
+        const hash = window.location.hash.slice(1);
+        if (hash === "channel-partner") setActiveTab("partner");
+    }, []);
+
     const handleChange = (field) => (e) => {
         setForm((prev) => ({ ...prev, [field]: e.target.value }));
         if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
+    };
+
+    const handlePartnerChange = (field) => (e) => {
+        setPartnerForm((prev) => ({ ...prev, [field]: e.target.value }));
+        if (partnerErrors[field]) setPartnerErrors((prev) => ({ ...prev, [field]: "" }));
+    };
+
+    const validatePartner = () => {
+        const e = {};
+        if (!partnerForm.companyName.trim()) e.companyName = "Company or firm name is required.";
+        if (!partnerForm.contactName.trim()) e.contactName = "Contact name is required.";
+        if (!partnerForm.email.trim()) e.email = "Email is required.";
+        else if (!/^\S+@\S+\.\S+$/.test(partnerForm.email)) e.email = "Enter a valid email address.";
+        if (!partnerForm.phone.trim()) e.phone = "Phone number is required.";
+        if (!partnerForm.city.trim()) e.city = "City is required.";
+        if (!partnerForm.channelFocus) e.channelFocus = "Please select an area of interest.";
+        return e;
+    };
+
+    const handlePartnerSubmit = (e) => {
+        e.preventDefault();
+        const validationErrors = validatePartner();
+        if (Object.keys(validationErrors).length > 0) {
+            setPartnerErrors(validationErrors);
+            return;
+        }
+        console.log("Channel Partner Inquiry:", partnerForm);
+        setPartnerSubmitted(true);
+        setPartnerForm({
+            companyName: "",
+            contactName: "",
+            email: "",
+            phone: "",
+            city: "",
+            channelFocus: "",
+            message: "",
+        });
     };
 
     const handleFile = (file) => {
@@ -176,52 +239,74 @@ export default function CareerPage() {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
                             <a
-                                href="#apply-form"
+                                href="#career-forms"
                                 data-testid="career-apply-now-hero"
+                                onClick={() => setActiveTab("career")}
                                 className="bg-[#D4A76A] text-[#1E1E1E] px-7 py-3.5 text-sm font-semibold hover:bg-[#E0CC9C] transition-colors duration-200 inline-block text-center"
                             >
                                 Apply Now
                             </a>
-                            <Link
-                                to="/contact"
+                            <a
+                                href="#career-forms"
                                 data-testid="career-channel-partner-btn"
+                                onClick={() => setActiveTab("partner")}
                                 className="border border-[#D4A76A] text-[#D4A76A] px-7 py-3.5 text-sm font-semibold hover:bg-[#D4A76A] hover:text-[#1E1E1E] transition-all duration-200 inline-block text-center"
                             >
                                 Become a channel partner
-                            </Link>
+                            </a>
                         </div>
                     </motion.div>
                 </div>
             </section>
 
-            {/* Application Form Section */}
+            {/* Forms (tabs) */}
             <section
-                id="apply-form"
+                id="career-forms"
                 data-testid="career-form-section"
                 className="py-20 lg:py-28 bg-[#F8F5F0]"
             >
                 <div className="max-w-4xl mx-auto px-6 lg:px-8">
-                    {/* Section Header */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="text-center mb-12"
+                        className="text-center mb-10"
                     >
                         <p className="text-[#D4A76A] text-xs tracking-[0.32em] uppercase mb-3">
                             Join Our Team
                         </p>
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-                            Submit your application
+                            Get started
                         </h2>
-                        <p className="text-gray-500 text-sm leading-relaxed">
-                            Share your details and our team will reach out if a suitable opportunity
-                            is available.
+                        <p className="text-gray-500 text-sm leading-relaxed max-w-xl mx-auto">
+                            Apply for a role or register as a channel partner — choose a tab below.
                         </p>
                     </motion.div>
 
-                    {/* Form Card */}
+                    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                        <TabsList
+                            className="grid w-full max-w-lg mx-auto grid-cols-2 h-12 rounded-lg bg-[#E8E4DD] p-1 text-gray-600 mb-8"
+                            data-testid="career-forms-tabs"
+                        >
+                            <TabsTrigger
+                                value="career"
+                                className="rounded-md text-sm font-semibold data-[state=active]:bg-white data-[state=active]:text-[#1E1E1E] data-[state=active]:shadow-sm"
+                            >
+                                Job application
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="partner"
+                                className="rounded-md text-sm font-semibold data-[state=active]:bg-white data-[state=active]:text-[#1E1E1E] data-[state=active]:shadow-sm"
+                            >
+                                Channel partner
+                            </TabsTrigger>
+                        </TabsList>
+
+                        <TabsContent value="career" className="mt-0 outline-none">
+                            <p className="text-center text-gray-500 text-sm mb-6 max-w-lg mx-auto">
+                                Share your details and our team will reach out if a suitable opportunity is available.
+                            </p>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -418,6 +503,139 @@ export default function CareerPage() {
                             </form>
                         )}
                     </motion.div>
+                        </TabsContent>
+
+                        <TabsContent
+                            value="partner"
+                            className="mt-0 outline-none"
+                            data-testid="career-channel-partner-section"
+                        >
+                            <p className="text-center text-gray-500 text-sm mb-6 max-w-lg mx-auto">
+                                Register your interest to collaborate with Gopal Charan on residential, commercial, and industrial opportunities.
+                            </p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.05 }}
+                        className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 lg:p-10"
+                    >
+                        {partnerSubmitted ? (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="flex flex-col items-center justify-center py-16 text-center"
+                                data-testid="career-channel-partner-success"
+                            >
+                                <div className="w-16 h-16 bg-[#D4A76A]/15 rounded-full flex items-center justify-center mb-5">
+                                    <svg className="w-8 h-8 text-[#D4A76A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <h3 className="text-gray-800 text-2xl font-semibold mb-2">
+                                    Inquiry received
+                                </h3>
+                                <p className="text-gray-500 text-sm max-w-sm">
+                                    Thank you. Our partnerships team will contact you shortly.
+                                </p>
+                            </motion.div>
+                        ) : (
+                            <form
+                                onSubmit={handlePartnerSubmit}
+                                data-testid="career-channel-partner-form"
+                                noValidate
+                            >
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <FormInput
+                                        label="Company / firm name"
+                                        id="partnerCompanyName"
+                                        placeholder="Registered business name"
+                                        value={partnerForm.companyName}
+                                        onChange={handlePartnerChange("companyName")}
+                                        error={partnerErrors.companyName}
+                                        required
+                                    />
+                                    <FormInput
+                                        label="Contact person"
+                                        id="partnerContactName"
+                                        placeholder="Full name"
+                                        value={partnerForm.contactName}
+                                        onChange={handlePartnerChange("contactName")}
+                                        error={partnerErrors.contactName}
+                                        required
+                                    />
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <FormInput
+                                        label="Email address"
+                                        id="partnerEmail"
+                                        type="email"
+                                        placeholder="you@company.com"
+                                        value={partnerForm.email}
+                                        onChange={handlePartnerChange("email")}
+                                        error={partnerErrors.email}
+                                        required
+                                    />
+                                    <FormInput
+                                        label="Phone number"
+                                        id="partnerPhone"
+                                        type="tel"
+                                        placeholder="+91 XXXXX XXXXX"
+                                        value={partnerForm.phone}
+                                        onChange={handlePartnerChange("phone")}
+                                        error={partnerErrors.phone}
+                                        required
+                                    />
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <FormInput
+                                        label="City"
+                                        id="partnerCity"
+                                        placeholder="City, State"
+                                        value={partnerForm.city}
+                                        onChange={handlePartnerChange("city")}
+                                        error={partnerErrors.city}
+                                        required
+                                    />
+                                    <FormSelect
+                                        label="Primary focus"
+                                        id="partnerChannelFocus"
+                                        value={partnerForm.channelFocus}
+                                        onChange={handlePartnerChange("channelFocus")}
+                                        options={channelFocusOptions}
+                                        placeholder="Select focus area"
+                                        error={partnerErrors.channelFocus}
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-8">
+                                    <label htmlFor="partnerMessage" className="block text-sm font-medium text-gray-700 mb-1.5">
+                                        Message <span className="text-gray-400 font-normal">(optional)</span>
+                                    </label>
+                                    <textarea
+                                        id="partnerMessage"
+                                        data-testid="career-partnerMessage"
+                                        value={partnerForm.message}
+                                        onChange={handlePartnerChange("message")}
+                                        rows={4}
+                                        placeholder="Briefly describe your business and how you would like to partner with us..."
+                                        className="w-full bg-white border border-gray-300 rounded px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#D4A76A] transition-colors duration-200 resize-none"
+                                    />
+                                </div>
+                                <div className="flex justify-center">
+                                    <button
+                                        type="submit"
+                                        data-testid="career-channel-partner-submit"
+                                        className="bg-[#D4A76A] text-[#1E1E1E] px-16 py-4 text-sm font-semibold hover:bg-[#E0CC9C] transition-colors duration-200 tracking-wide"
+                                    >
+                                        Submit inquiry
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+                    </motion.div>
+                        </TabsContent>
+                    </Tabs>
                 </div>
             </section>
         </>

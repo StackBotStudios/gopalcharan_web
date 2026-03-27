@@ -23,7 +23,6 @@ function PageHeader() {
                     transition={{ duration: 0.7 }}
                     className="max-w-3xl"
                 >
-                    <p className="text-white text-xs tracking-[0.30em] uppercase mb-4">Let&apos;s Build Your Future</p>
                     <h1 className="text-3xl md:text-[44px] font-semibold text-white leading-tight mb-3">
                         Let&apos;s Start a Conversation
                     </h1>

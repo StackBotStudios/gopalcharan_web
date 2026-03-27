@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
 import { SignatureDevelopments } from "../components/SignatureDevelopments";
-import { OurVision } from "../components/OurVision";
-import { CTABanner } from "../components/CTABanner";
 
 function PageHeader({ label, title, subtitle }) {
     return (
@@ -41,8 +39,6 @@ export default function ServicesPage() {
                 subtitle="A curated portfolio of landmark projects across residential, commercial and industrial sectors."
             />
             <SignatureDevelopments showAll />
-            <OurVision />
-            <CTABanner />
         </>
     );
 }

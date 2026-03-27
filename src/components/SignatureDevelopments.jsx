@@ -29,15 +29,42 @@ const projects = [
         location: "Vahelal, Ahmedabad",
         size: "2.4M Sq Ft | 2026",
     },
+    {
+        id: 4,
+        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80",
+        category: "Residential",
+        status: "Ongoing",
+        title: "Skyline Residences",
+        location: "SG Highway, Ahmedabad",
+        size: "1.2M Sq Ft | 2025",
+    },
+    {
+        id: 5,
+        image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+        category: "Commercial",
+        status: "Completed",
+        title: "Metro Business Plaza",
+        location: "Vastrapur, Ahmedabad",
+        size: "850K Sq Ft | 2024",
+    },
+    {
+        id: 6,
+        image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80",
+        category: "Industrial",
+        status: "Ongoing",
+        title: "Logistics Gateway",
+        location: "Sanand, Ahmedabad",
+        size: "3.1M Sq Ft | 2027",
+    },
 ];
 
 export function SignatureDevelopments({ showAll = false }) {
-    const displayProjects = showAll ? projects : projects;
+    const displayProjects = showAll ? projects : projects.slice(0, 3);
 
     return (
         <section
             data-testid="signature-developments-section"
-            className="py-20 md:py-24 bg-[#171A1F]"
+            className="py-20 md:py-24 bg-[#0f172a] border-y border-white/5"
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-10">
                 {/* Header */}
@@ -48,13 +75,13 @@ export function SignatureDevelopments({ showAll = false }) {
                     transition={{ duration: 0.6 }}
                     className="mb-10 md:mb-12"
                 >
-                    <p className="text-white text-xs tracking-[0.32em] uppercase mb-3 font-semibold">
+                    <p className="text-slate-400 text-xs tracking-[0.32em] uppercase mb-3 font-semibold">
                         Our Portfolio
                     </p>
-                    <h2 className="text-3xl md:text-[44px] font-semibold text-white mb-4 leading-tight">
+                    <h2 className="text-3xl md:text-[44px] font-semibold text-slate-50 mb-4 leading-tight">
                         Signature Developments
                     </h2>
-                    <p className="text-white text-base md:text-[23px] leading-snug max-w-[1320px]">
+                    <p className="text-slate-300 text-base md:text-[23px] leading-snug max-w-[1320px]">
                         A curated portfolio of landmark projects across residential, commercial
                         and industrial sectors.
                     </p>
@@ -69,9 +96,9 @@ export function SignatureDevelopments({ showAll = false }) {
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: idx * 0.08 }}
                             data-testid={`project-card-${project.id}`}
-                            className="bg-[#1F252E] rounded-[18px] overflow-hidden"
+                            className="bg-[#1e293b] rounded-[18px] overflow-hidden border border-slate-700/50"
                         >
-                            <div className="h-[270px] bg-[#20262F]">
+                            <div className="h-[270px] bg-[#334155]/40">
                                 {project.image && (
                                     <img
                                         src={project.image}
@@ -82,18 +109,18 @@ export function SignatureDevelopments({ showAll = false }) {
                             </div>
                             <div className="p-6">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <span className="bg-[#515151] text-white text-sm md:text-[22px] leading-none px-4 py-2 rounded-full">
+                                    <span className="bg-[#515151] text-white text-sm md:text-[20px] leading-none px-4 py-2 rounded-full">
                                         {project.category}
                                     </span>
-                                    <span className="bg-[#515151] text-white text-sm md:text-[22px] leading-none px-4 py-2 rounded-full">
+                                    <span className="bg-[#515151] text-white text-sm md:text-[20px] leading-none px-4 py-2 rounded-full">
                                         {project.status}
                                     </span>
                                 </div>
-                                <h3 className="text-white text-lg md:text-[20px] leading-none font-semibold mb-3">
+                                <h3 className="text-slate-50 text-lg md:text-[20px] leading-none font-semibold mb-3">
                                     {project.title}
                                 </h3>
-                                <p className="text-white text-sm md:text-[16px] leading-none mb-4">{project.location}</p>
-                                <p className="text-white text-sm md:text-[16px] leading-none font-semibold mb-5">
+                                <p className="text-slate-400 text-sm md:text-[16px] leading-none mb-4">{project.location}</p>
+                                <p className="text-slate-200 text-sm md:text-[16px] leading-none font-semibold mb-5">
                                     {project.size}
                                 </p>
                                 <button
@@ -107,16 +134,17 @@ export function SignatureDevelopments({ showAll = false }) {
                     ))}
                 </div>
 
-                {/* View All */}
-                <div className="flex justify-center mt-10 md:mt-12">
-                    <Link
-                        to="/projects"
-                        data-testid="view-all-projects-btn"
-                        className="bg-[#ffffff] text-[#101114] px-6 py-3 text-sm md:text-[14px] leading-none rounded-xl font-semibold hover:bg-[#9EA2A9] transition-colors duration-200 mt-2"
-                    >
-                        View All Projects
-                    </Link>
-                </div>
+                {!showAll && (
+                    <div className="flex justify-center mt-10 md:mt-12">
+                        <Link
+                            to="/projects"
+                            data-testid="view-more-projects-btn"
+                            className="inline-flex items-center justify-center bg-[#D8B98B] text-[#0f172a] px-8 py-3 text-sm md:text-base font-semibold rounded-lg hover:bg-[#c9a876] transition-colors duration-200"
+                        >
+                            View more projects
+                        </Link>
+                    </div>
+                )}
             </div>
         </section>
     );

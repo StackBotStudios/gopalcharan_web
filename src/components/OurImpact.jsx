@@ -11,7 +11,7 @@ export function OurImpact() {
     return (
         <section
             data-testid="our-impact-section"
-            className="py-20 md:py-24 bg-[#171A1F]"
+            className="py-20 md:py-24 bg-[#E8E3DA] border-y border-stone-300/60"
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-10">
                 {/* Header */}
@@ -22,13 +22,13 @@ export function OurImpact() {
                     transition={{ duration: 0.6 }}
                     className="mb-12 md:mb-14"
                 >
-                    <p className="text-white text-xs tracking-[0.30em] uppercase mb-3 font-medium">
+                    <p className="text-[#A67C52] text-xs tracking-[0.30em] uppercase mb-3 font-semibold">
                         Our Impact
                     </p>
-                    <h2 className="text-3xl md:text-[50px] font-semibold text-white mb-4 leading-tight">
+                    <h2 className="text-3xl md:text-[50px] font-semibold text-stone-900 mb-4 leading-tight">
                         Four Decades of Measurable Excellence
                     </h2>
-                    <p className="text-white text-base md:text-[22px] leading-snug">
+                    <p className="text-stone-600 text-base md:text-[22px] leading-snug">
                         Delivering scale, precision, and trust across every development.
                     </p>
                 </motion.div>
@@ -54,10 +54,10 @@ function StatCard({ stat, idx }) {
             data-testid={`stat-card-${idx}`}
             className="text-left py-2 px-2"
         >
-            <div className="text-[44px] md:text-[56px] font-semibold text-[#D8B98B] mb-2 tracking-tight leading-none">
+            <div className="text-[44px] md:text-[56px] font-semibold text-[#9A7348] mb-2 tracking-tight leading-none">
                 {stat.display}
             </div>
-            <p className="text-white text-base md:text-[21px] leading-tight">{stat.label}</p>
+            <p className="text-stone-700 text-base md:text-[21px] leading-tight">{stat.label}</p>
         </motion.div>
     );
 }

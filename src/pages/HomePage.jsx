@@ -1,10 +1,8 @@
 import { Hero } from "../components/Hero";
 import { AboutLegacy } from "../components/AboutLegacy";
 import { SignatureDevelopments } from "../components/SignatureDevelopments";
-import { OurVision } from "../components/OurVision";
 import { OurImpact } from "../components/OurImpact";
 import { Testimonials } from "../components/Testimonials";
-import { CTABanner } from "../components/CTABanner";
 
 export default function HomePage() {
     return (
@@ -18,10 +16,8 @@ export default function HomePage() {
             />
             <AboutLegacy />
             <SignatureDevelopments />
-            <OurVision />
             <OurImpact />
             <Testimonials />
-            <CTABanner />
         </>
     );
 }
