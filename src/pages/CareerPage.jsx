@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CloudUpload, ChevronDown, X, FileText } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { submitToFormBold } from "@/lib/formbold";
 
 const CAREER_BG = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80";
 
@@ -107,6 +108,8 @@ export default function CareerPage() {
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
     const [dragOver, setDragOver] = useState(false);
+    const [careerSubmitting, setCareerSubmitting] = useState(false);
+    const [careerSubmitError, setCareerSubmitError] = useState("");
 
     const [partnerForm, setPartnerForm] = useState({
         companyName: "",
@@ -119,6 +122,8 @@ export default function CareerPage() {
     });
     const [partnerErrors, setPartnerErrors] = useState({});
     const [partnerSubmitted, setPartnerSubmitted] = useState(false);
+    const [partnerSubmitting, setPartnerSubmitting] = useState(false);
+    const [partnerSubmitError, setPartnerSubmitError] = useState("");
 
     const [activeTab, setActiveTab] = useState("career");
 
@@ -149,24 +154,40 @@ export default function CareerPage() {
         return e;
     };
 
-    const handlePartnerSubmit = (e) => {
+    const handlePartnerSubmit = async (e) => {
         e.preventDefault();
+        setPartnerSubmitError("");
         const validationErrors = validatePartner();
         if (Object.keys(validationErrors).length > 0) {
             setPartnerErrors(validationErrors);
             return;
         }
-        console.log("Channel Partner Inquiry:", partnerForm);
-        setPartnerSubmitted(true);
-        setPartnerForm({
-            companyName: "",
-            contactName: "",
-            email: "",
-            phone: "",
-            city: "",
-            channelFocus: "",
-            message: "",
-        });
+        const fd = new FormData();
+        fd.append("email", partnerForm.email.trim());
+        fd.append("subject", `Channel partner — ${partnerForm.companyName.trim()}`);
+        fd.append(
+            "message",
+            `Company / firm: ${partnerForm.companyName.trim()}\nContact: ${partnerForm.contactName.trim()}\nPhone: ${partnerForm.phone.trim()}\nCity: ${partnerForm.city.trim()}\nPrimary focus: ${partnerForm.channelFocus}\n\n${(partnerForm.message || "").trim() || "(no additional message)"}`
+        );
+        setPartnerSubmitting(true);
+        try {
+            const res = await submitToFormBold(fd);
+            if (!res.ok) throw new Error("Bad response");
+            setPartnerSubmitted(true);
+            setPartnerForm({
+                companyName: "",
+                contactName: "",
+                email: "",
+                phone: "",
+                city: "",
+                channelFocus: "",
+                message: "",
+            });
+        } catch {
+            setPartnerSubmitError("Could not send. Please try again or contact us by phone or email.");
+        } finally {
+            setPartnerSubmitting(false);
+        }
     };
 
     const handleFile = (file) => {
@@ -196,15 +217,43 @@ export default function CareerPage() {
         return e;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setCareerSubmitError("");
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
-        console.log("Career Application Submission:", { ...form, resume: resume?.name || null });
-        setSubmitted(true);
+        const fd = new FormData();
+        fd.append("email", form.email.trim());
+        fd.append("subject", `Career application — ${form.position}`);
+        fd.append(
+            "message",
+            `Name: ${form.fullName.trim()}\nPhone: ${form.phone.trim()}\nLocation: ${form.location.trim()}\nPosition: ${form.position}\nExperience: ${form.experience}\n\n${(form.message || "").trim() || "(no message)"}`
+        );
+        if (resume) fd.append("file", resume, resume.name);
+        setCareerSubmitting(true);
+        try {
+            const res = await submitToFormBold(fd);
+            if (!res.ok) throw new Error("Bad response");
+            setSubmitted(true);
+            setResume(null);
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            setForm({
+                fullName: "",
+                email: "",
+                phone: "",
+                location: "",
+                position: "",
+                experience: "",
+                message: "",
+            });
+        } catch {
+            setCareerSubmitError("Could not send. Please try again or email your resume directly.");
+        } finally {
+            setCareerSubmitting(false);
+        }
     };
 
     return (
@@ -490,14 +539,20 @@ export default function CareerPage() {
                                     />
                                 </div>
 
+                                {careerSubmitError && (
+                                    <p className="text-red-600 text-sm text-center mb-4" data-testid="career-submit-error">
+                                        {careerSubmitError}
+                                    </p>
+                                )}
                                 {/* Submit Button */}
                                 <div className="flex justify-center">
                                     <button
                                         type="submit"
+                                        disabled={careerSubmitting}
                                         data-testid="career-submit-btn"
-                                        className="bg-[#D4A76A] text-[#1E1E1E] px-16 py-4 text-sm font-semibold hover:bg-[#E0CC9C] transition-colors duration-200 tracking-wide"
+                                        className="bg-[#D4A76A] text-[#1E1E1E] px-16 py-4 text-sm font-semibold hover:bg-[#E0CC9C] transition-colors duration-200 tracking-wide disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
-                                        Apply Now
+                                        {careerSubmitting ? "Sending…" : "Apply Now"}
                                     </button>
                                 </div>
                             </form>
@@ -622,13 +677,19 @@ export default function CareerPage() {
                                         className="w-full bg-white border border-gray-300 rounded px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#D4A76A] transition-colors duration-200 resize-none"
                                     />
                                 </div>
+                                {partnerSubmitError && (
+                                    <p className="text-red-600 text-sm text-center mb-4" data-testid="career-partner-submit-error">
+                                        {partnerSubmitError}
+                                    </p>
+                                )}
                                 <div className="flex justify-center">
                                     <button
                                         type="submit"
+                                        disabled={partnerSubmitting}
                                         data-testid="career-channel-partner-submit"
-                                        className="bg-[#D4A76A] text-[#1E1E1E] px-16 py-4 text-sm font-semibold hover:bg-[#E0CC9C] transition-colors duration-200 tracking-wide"
+                                        className="bg-[#D4A76A] text-[#1E1E1E] px-16 py-4 text-sm font-semibold hover:bg-[#E0CC9C] transition-colors duration-200 tracking-wide disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
-                                        Submit inquiry
+                                        {partnerSubmitting ? "Sending…" : "Submit inquiry"}
                                     </button>
                                 </div>
                             </form>

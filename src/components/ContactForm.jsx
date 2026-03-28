@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
+import { submitToFormBold } from "@/lib/formbold";
 
 export function ContactForm() {
     const [formData, setFormData] = useState({
@@ -10,8 +11,11 @@ export function ContactForm() {
         inquiryType: "",
         message: "",
     });
+    const [attachment, setAttachment] = useState(null);
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState("");
 
     const validate = () => {
         const newErrors = {};
@@ -34,17 +38,34 @@ export function ContactForm() {
         if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setSubmitError("");
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
-        console.log("Contact Form Submission:", formData);
-        setSubmitted(true);
-        setFormData({ name: "", email: "", phone: "", inquiryType: "", message: "" });
-        setTimeout(() => setSubmitted(false), 5000);
+        const fd = new FormData();
+        fd.append("email", formData.email.trim());
+        fd.append("subject", `Website contact — ${formData.inquiryType}`);
+        fd.append(
+            "message",
+            `Name: ${formData.name.trim()}\nPhone: ${formData.phone.trim()}\nInquiry type: ${formData.inquiryType}\n\n${formData.message.trim()}`
+        );
+        if (attachment) fd.append("file", attachment, attachment.name);
+        setSubmitting(true);
+        try {
+            const res = await submitToFormBold(fd);
+            if (!res.ok) throw new Error("Bad response");
+            setSubmitted(true);
+            setFormData({ name: "", email: "", phone: "", inquiryType: "", message: "" });
+            setAttachment(null);
+        } catch {
+            setSubmitError("Something went wrong. Please try again or email us directly.");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -178,12 +199,36 @@ export function ContactForm() {
                                         {errors.message && <p data-testid="message-error" className="text-red-500 text-xs mt-1">{errors.message}</p>}
                                     </div>
 
+                                    <div>
+                                        <label className="text-[#4D5158] text-xs mb-1.5 block">
+                                            Attachment <span className="text-[#6B7280] font-normal">(optional)</span>
+                                        </label>
+                                        <input
+                                            type="file"
+                                            name="file"
+                                            data-testid="contact-file-input"
+                                            accept=".pdf,.doc,.docx,image/*"
+                                            onChange={(ev) => {
+                                                const f = ev.target.files?.[0];
+                                                setAttachment(f || null);
+                                            }}
+                                            className="w-full text-sm text-[#4D5158] file:mr-3 file:rounded file:border-0 file:bg-[#E8E4DD] file:px-3 file:py-2 file:text-sm file:font-medium"
+                                        />
+                                    </div>
+
+                                    {submitError && (
+                                        <p className="text-red-600 text-sm text-center" data-testid="contact-submit-error">
+                                            {submitError}
+                                        </p>
+                                    )}
+
                                     <button
                                         type="submit"
+                                        disabled={submitting}
                                         data-testid="contact-form-submit"
-                                        className="mx-auto block bg-[#D8B98B] text-[#1D2025] px-7 py-2.5 rounded-md text-sm font-medium hover:bg-[#CCAB79] transition-colors duration-200"
+                                        className="mx-auto block bg-[#D8B98B] text-[#1D2025] px-7 py-2.5 rounded-md text-sm font-medium hover:bg-[#CCAB79] transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
-                                        Send Message
+                                        {submitting ? "Sending…" : "Send Message"}
                                     </button>
                                 </form>
                             )}
